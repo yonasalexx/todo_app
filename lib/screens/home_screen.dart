@@ -1,17 +1,83 @@
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/constants/app_color.dart';
+import 'package:todo_app/constants/constants.dart';
 import 'package:todo_app/constants/services.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  DateTime _selectedDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: const Center(
-        child: Text('This is home screen\'s body.'),
+      body: Column(
+        children: [
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              _buildViewAllTaskButton(),
+              _buildDatePicker(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Expanded _buildDatePicker() {
+    return Expanded(
+      child: DatePicker(
+        DateTime.now(),
+        height: 80,
+        width: 50,
+        selectionColor: AppColor.blue,
+        monthTextStyle: datePickerTextStyles,
+        dateTextStyle: datePickerTextStyles.copyWith(fontSize: 18),
+        dayTextStyle: datePickerTextStyles,
+        onDateChange: (date) => setState(() => _selectedDate = date),
+      ),
+    );
+  }
+
+  GestureDetector _buildViewAllTaskButton() {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        height: 75,
+        width: 50,
+        margin: const EdgeInsets.only(left: 17),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColor.yellow.withRed(290),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'View',
+              style: datePickerTextStyles.copyWith(color: AppColor.white),
+            ),
+            Text(
+              'All',
+              style: datePickerTextStyles.copyWith(
+                fontSize: 18,
+                color: AppColor.white,
+              ),
+            ),
+            Text(
+              'Tasks',
+              style: datePickerTextStyles.copyWith(color: AppColor.white),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -34,7 +100,7 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Oct 24, 2021',
+            'October 24, 2021',
             style: TextStyle(
               fontSize: 13,
               color: Get.isDarkMode ? AppColor.lightGrey : AppColor.grey,
@@ -48,21 +114,23 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildActions() => [
-        IconButton(
-          onPressed: () => ThemeServices().changeThemeMode(),
-          icon: Icon(
-            Get.isDarkMode ? Icons.lightbulb_outline : Icons.lightbulb,
-          ),
-          iconSize: 20,
-          color: Get.isDarkMode ? AppColor.yellow : AppColor.yellow,
+  List<Widget> _buildActions() {
+    return [
+      IconButton(
+        onPressed: () => ThemeServices().changeThemeMode(),
+        icon: Icon(
+          Get.isDarkMode ? Icons.lightbulb_outline : Icons.lightbulb,
         ),
-        IconButton(
-          onPressed: () {
-            print('Settings button tapped!');
-          },
-          icon: const Icon(Icons.settings),
-          color: Get.isDarkMode ? AppColor.white : AppColor.black,
-        ),
-      ];
+        iconSize: 20,
+        color: Get.isDarkMode ? AppColor.yellow : AppColor.yellow,
+      ),
+      IconButton(
+        onPressed: () {
+          print('Settings button tapped!');
+        },
+        icon: const Icon(Icons.settings),
+        color: Get.isDarkMode ? AppColor.white : AppColor.black,
+      ),
+    ];
+  }
 }
