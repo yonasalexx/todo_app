@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/constants/constants.dart';
-
-import 'widgets/my_text_field.dart';
+import 'package:todo_app/constants/widgets.dart';
 
 enum Time { start, end }
 
@@ -20,6 +19,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   List<int> reminderList = [5, 10, 15, 20, 30];
   int selectedMinute = 5;
+
+  List<String> repeatList = ['NONE', 'EVERYDAY', 'WEEKLY', 'MONTHLY'];
+  String selectedRepeat = 'NONE';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,28 +90,64 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               MyTextField(
                 title: 'REMINDER',
                 hintText: '$selectedMinute MINUTES EARLY',
-                child: DropdownButton(
-                  items: reminderList
-                      .map((e) => DropdownMenuItem(
-                            child: Text(e.toString()),
-                            value: e.toString(),
-                          ))
-                      .toList(),
-                  icon: const Icon(
-                    Icons.alarm,
-                    color: Colors.grey,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: DropdownButton(
+                    items: reminderList
+                        .map((e) => DropdownMenuItem(
+                              child: Text(e.toString()),
+                              value: e.toString(),
+                            ))
+                        .toList(),
+                    icon: const Icon(
+                      Icons.alarm,
+                      color: Colors.grey,
+                    ),
+                    underline: const SizedBox(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedMinute = int.parse(newValue!);
+                      });
+                    },
                   ),
-                  underline: const SizedBox(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedMinute = int.parse(newValue!);
-                    });
-                  },
                 ),
-              )
+              ),
+              const SizedBox(height: 12),
+              MyTextField(
+                title: 'REPEAT',
+                hintText: selectedRepeat,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 11),
+                  child: DropdownButton(
+                    items: repeatList
+                        .map((value) => DropdownMenuItem(
+                              child: Text(value),
+                              value: value,
+                            ))
+                        .toList(),
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.grey,
+                    ),
+                    underline: const SizedBox(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedRepeat = newValue!;
+                      });
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
         ),
+      ),
+      floatingActionButton: MyFab(
+        title: 'CREATE',
+        onPressed: () {
+          Get.back();
+        },
+        icon: Icons.done,
       ),
     );
   }

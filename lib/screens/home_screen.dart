@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:todo_app/constants/constants.dart';
 import 'package:todo_app/constants/screens.dart';
 import 'package:todo_app/constants/services.dart';
+import 'package:todo_app/constants/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -30,21 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: MyFab(
+        title: 'NEW TASK',
         onPressed: () {
           Get.to(() => AddTaskScreen(selectedDate: _selectedDate));
         },
-        backgroundColor: AppColor.yellow.withRed(290),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        label: Row(
-          children: const [
-            Text('CREATE', style: TextStyle(color: AppColor.white)),
-            SizedBox(width: 5),
-            Icon(Icons.mode_edit, size: 16, color: AppColor.white),
-          ],
-        ),
+        icon: Icons.mode_edit,
       ),
     );
   }
