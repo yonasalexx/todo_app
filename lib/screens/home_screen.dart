@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/constants/constants.dart';
+import 'package:todo_app/constants/screens.dart';
 import 'package:todo_app/constants/services.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,7 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Get.to(() => AddTaskScreen(selectedDate: _selectedDate));
+        },
         backgroundColor: AppColor.yellow.withRed(290),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
@@ -53,9 +56,10 @@ class _HomeScreenState extends State<HomeScreen> {
         height: 80,
         width: 50,
         selectionColor: AppColor.blue,
-        monthTextStyle: datePickerTextStyles,
-        dateTextStyle: datePickerTextStyles.copyWith(fontSize: 18),
-        dayTextStyle: datePickerTextStyles,
+        initialSelectedDate: DateTime.now(),
+        monthTextStyle: datePickerTextStyle,
+        dateTextStyle: datePickerTextStyle.copyWith(fontSize: 18),
+        dayTextStyle: datePickerTextStyle,
         onDateChange: (date) => setState(() => _selectedDate = date),
       ),
     );
@@ -78,18 +82,18 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               'View',
-              style: datePickerTextStyles.copyWith(color: AppColor.white),
+              style: datePickerTextStyle.copyWith(color: AppColor.white),
             ),
             Text(
               'All',
-              style: datePickerTextStyles.copyWith(
+              style: datePickerTextStyle.copyWith(
                 fontSize: 18,
                 color: AppColor.white,
               ),
             ),
             Text(
               'Tasks',
-              style: datePickerTextStyles.copyWith(color: AppColor.white),
+              style: datePickerTextStyle.copyWith(color: AppColor.white),
             ),
           ],
         ),
