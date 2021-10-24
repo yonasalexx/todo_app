@@ -1,6 +1,7 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/constants/constants.dart';
 import 'package:todo_app/constants/services.dart';
 
@@ -27,6 +28,20 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        backgroundColor: AppColor.yellow.withRed(290),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        label: Row(
+          children: const [
+            Text('CREATE', style: TextStyle(color: AppColor.white)),
+            SizedBox(width: 5),
+            Icon(Icons.mode_edit, size: 16, color: AppColor.white),
+          ],
+        ),
       ),
     );
   }
@@ -100,10 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            'October 24, 2021',
-            style: TextStyle(
+            DateFormat.yMMMMd().format(DateTime.now()),
+            style: const TextStyle(
               fontSize: 13,
-              color: Get.isDarkMode ? AppColor.lightGrey : AppColor.grey,
+              color: AppColor.grey,
               letterSpacing: 2,
               fontWeight: FontWeight.bold,
             ),
