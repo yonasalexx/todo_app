@@ -5,6 +5,8 @@ import 'package:todo_app/constants/constants.dart';
 
 import 'widgets/my_text_field.dart';
 
+enum Time { start, end }
+
 class AddTaskScreen extends StatefulWidget {
   AddTaskScreen({Key? key, required this.selectedDate}) : super(key: key);
   DateTime selectedDate;
@@ -13,6 +15,8 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
+  String startingTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
+  String endingTime = '0:00 PM';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,6 +65,38 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 14),
+              Row(
+                children: [
+                  Expanded(
+                    child: MyTextField(
+                      title: 'STARTING TIME',
+                      hintText: startingTime,
+                      child: IconButton(
+                        onPressed: () => _buildTimePicker(Time.start),
+                        icon: const Icon(
+                          Icons.access_time_rounded,
+                          color: AppColor.grey,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: MyTextField(
+                      title: 'ENDING TIME',
+                      hintText: endingTime,
+                      child: IconButton(
+                        onPressed: () => _buildTimePicker(Time.end),
+                        icon: const Icon(
+                          Icons.access_time_rounded,
+                          color: AppColor.grey,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -80,5 +116,31 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         widget.selectedDate = _datePicker;
       });
     }
+  }
+
+  void _buildTimePicker(time) async {
+    var pickedTime = await timePicker();
+    String formatTime = pickedTime.format(context);
+    if (time == Time.start) {
+      setState(() {
+        startingTime = formatTime;
+      });
+    }
+    if (time == Time.end) {
+      setState(() {
+        endingTime = formatTime;
+      });
+    }
+  }
+
+  timePicker() {
+    return showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(
+        hour: int.parse(startingTime.split(':')[0]),
+        minute: int.parse(startingTime.split(':')[1].split(' ')[0]),
+      ),
+      initialEntryMode: TimePickerEntryMode.input,
+    );
   }
 }
