@@ -50,6 +50,12 @@ class MyTextField extends StatelessWidget {
                   color: AppColor.grey,
                 ),
               ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(
+                  color: AppColor.grey,
+                ),
+              ),
               suffixIcon: child ?? const SizedBox(),
             ),
           ),
