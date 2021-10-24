@@ -17,29 +17,16 @@ class AddTaskScreen extends StatefulWidget {
 class _AddTaskScreenState extends State<AddTaskScreen> {
   String startingTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
   String endingTime = '0:00 PM';
+
+  List<int> reminderList = [5, 10, 15, 20, 30];
+  int selectedMinute = 5;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: context.theme.backgroundColor,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Get.isDarkMode ? AppColor.white : AppColor.black,
-          ),
-        ),
-        title: Text(
-          'Task Details',
-          style: TextStyle(
-            color: Get.isDarkMode ? AppColor.white : AppColor.darkGrey,
-          ),
-        ),
-      ),
+      appBar: _buildAppBar(context),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          padding: const EdgeInsets.all(15),
           child: Column(
             children: [
               const MyTextField(
@@ -97,8 +84,51 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 12),
+              MyTextField(
+                title: 'REMINDER',
+                hintText: '$selectedMinute MINUTES EARLY',
+                child: DropdownButton(
+                  items: reminderList
+                      .map((e) => DropdownMenuItem(
+                            child: Text(e.toString()),
+                            value: e.toString(),
+                          ))
+                      .toList(),
+                  icon: const Icon(
+                    Icons.alarm,
+                    color: Colors.grey,
+                  ),
+                  underline: const SizedBox(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedMinute = int.parse(newValue!);
+                    });
+                  },
+                ),
+              )
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: context.theme.backgroundColor,
+      elevation: 0,
+      leading: IconButton(
+        onPressed: () => Get.back(),
+        icon: Icon(
+          Icons.arrow_back_rounded,
+          color: Get.isDarkMode ? AppColor.white : AppColor.black,
+        ),
+      ),
+      title: Text(
+        'Task Details',
+        style: TextStyle(
+          color: Get.isDarkMode ? AppColor.white : AppColor.darkGrey,
         ),
       ),
     );
