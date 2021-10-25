@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +24,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   List<String> repeatList = ['NONE', 'EVERYDAY', 'WEEKLY', 'MONTHLY'];
   String selectedRepeat = 'NONE';
+
+  int selectedTaskTheme = Random().nextInt(3);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +35,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const MyTextField(
                 title: 'TITLE',
@@ -138,6 +144,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 12),
+              _buildColorPalette(),
             ],
           ),
         ),
@@ -149,6 +157,40 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         },
         icon: Icons.done,
       ),
+    );
+  }
+
+  Column _buildColorPalette() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('TASK COLOR'),
+        const SizedBox(height: 10),
+        Wrap(
+          children: List<Widget>.generate(3, (index) {
+            return GestureDetector(
+              onTap: () => selectedTaskTheme = index,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10, top: 5),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: index == 0
+                      ? AppColor.blue
+                      : index == 1
+                          ? AppColor.pink
+                          : AppColor.yellow,
+                  child: selectedTaskTheme == index
+                      ? const Icon(
+                          Icons.done,
+                          color: Colors.white,
+                        )
+                      : const SizedBox(),
+                ),
+              ),
+            );
+          }),
+        ),
+      ],
     );
   }
 
