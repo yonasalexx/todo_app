@@ -12,5 +12,5 @@ const datePickerTextStyle = TextStyle(
 TextStyle hintTextStyle = TextStyle(
   fontSize: 13,
   fontWeight: FontWeight.w400,
-  color: Get.isDarkMode ? AppColor.lightGrey.withOpacity(0.4) : AppColor.grey,
+  color: Get.isDarkMode ? AppColor.grey.withOpacity(0.4) : AppColor.grey,
 );

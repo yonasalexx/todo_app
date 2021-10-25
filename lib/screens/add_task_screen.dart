@@ -18,14 +18,13 @@ class AddTaskScreen extends StatefulWidget {
 class _AddTaskScreenState extends State<AddTaskScreen> {
   String startingTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
   String endingTime = '0:00 PM';
-
   List<int> reminderList = [5, 10, 15, 20, 30];
   int selectedMinute = 5;
-
   List<String> repeatList = ['NONE', 'EVERYDAY', 'WEEKLY', 'MONTHLY'];
   String selectedRepeat = 'NONE';
-
   int selectedTaskTheme = Random().nextInt(3);
+  TextEditingController titleController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +36,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const MyTextField(
+              MyTextField(
                 title: 'TITLE',
                 hintText: 'Title goes here',
+                controller: titleController,
               ),
               const SizedBox(height: 8),
-              const MyTextField(
+              MyTextField(
                 title: 'NOTE',
                 hintText: 'Note goes here',
+                controller: noteController,
               ),
               const SizedBox(height: 8),
               MyTextField(
@@ -152,12 +153,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       ),
       floatingActionButton: MyFab(
         title: 'CREATE',
-        onPressed: () {
-          Get.back();
-        },
+        onPressed: () => validateData(),
         icon: Icons.done,
       ),
     );
+  }
+
+  void validateData() {
+    if (titleController.text.isNotEmpty && noteController.text.isNotEmpty) {
+      Get.back();
+    } else if (titleController.text.isEmpty || noteController.text.isEmpty) {
+      Get.snackbar('Required', 'ALL FIELDS ARE REQUIRED.');
+    }
   }
 
   Column _buildColorPalette() {
@@ -169,7 +176,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         Wrap(
           children: List<Widget>.generate(3, (index) {
             return GestureDetector(
-              onTap: () => selectedTaskTheme = index,
+              onTap: () => setState(() => selectedTaskTheme = index),
               child: Padding(
                 padding: const EdgeInsets.only(right: 10, top: 5),
                 child: CircleAvatar(
@@ -184,7 +191,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           Icons.done,
                           color: Colors.white,
                         )
-                      : const SizedBox(),
+                      : CircleAvatar(
+                          radius: 20,
+                          backgroundColor: AppColor.black.withOpacity(0.5),
+                        ),
                 ),
               ),
             );
