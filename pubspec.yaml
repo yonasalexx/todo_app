@@ -38,6 +38,7 @@ dependencies:
   get_storage:
   date_picker_timeline:
   intl:
+  sqflite:
 
 dev_dependencies:
   flutter_test:

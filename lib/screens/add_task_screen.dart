@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/constants/constants.dart';
 import 'package:todo_app/constants/widgets.dart';
+import 'package:todo_app/controllers/task_controller.dart';
+import 'package:todo_app/models/task.dart';
 
 enum Time { start, end }
 
@@ -25,6 +27,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   int selectedTaskTheme = Random().nextInt(3);
   TextEditingController titleController = TextEditingController();
   TextEditingController noteController = TextEditingController();
+  final TaskController taskController = Get.put(TaskController());
 
   @override
   Widget build(BuildContext context) {
@@ -159,8 +162,25 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
+  addTaskToDatabase() async {
+    await taskController.addTask(
+      Task(
+        note: noteController.text,
+        title: titleController.text,
+        date: DateFormat.yMd().format(widget.selectedDate),
+        startTime: startingTime,
+        endTime: endingTime,
+        reminder: selectedMinute,
+        repeat: selectedRepeat,
+        color: selectedTaskTheme,
+        isCompleted: 0,
+      ),
+    );
+  }
+
   void validateData() {
     if (titleController.text.isNotEmpty && noteController.text.isNotEmpty) {
+      addTaskToDatabase();
       Get.back();
     } else if (titleController.text.isEmpty || noteController.text.isEmpty) {
       Get.snackbar('Required', 'ALL FIELDS ARE REQUIRED.');
